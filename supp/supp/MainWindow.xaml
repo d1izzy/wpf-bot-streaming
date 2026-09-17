@@ -35,42 +35,20 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <Border Grid.Row="0" Style="{StaticResource Card}" Background="#F7FAFF">
             <DockPanel>
                 <TextBlock Text="BotSupp Studio" FontSize="22" FontWeight="Bold" Foreground="#101828" />
                 <TextBlock x:Name="HeaderStatusText" Text="Готово" HorizontalAlignment="Right" DockPanel.Dock="Right" Foreground="#475467" FontWeight="SemiBold" />
             </DockPanel>
         </Border>
-
         <Grid Grid.Row="1" Margin="0,12,0,12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280" />
-                <ColumnDefinition Width="12" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
+            <Grid.ColumnDefinitions><ColumnDefinition Width="280" /><ColumnDefinition Width="12" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
             <Border Grid.Column="0" Style="{StaticResource Card}">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
                     <TextBlock Text="Боты" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" />
                     <ListBox x:Name="BotsListBox" Grid.Row="1" SelectionChanged="BotsListBox_SelectionChanged" BorderBrush="#E6ECF7">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="6">
-                                    <TextBlock FontWeight="Bold">
-                                        <Run Text="{Binding StatusIcon}" />
-                                        <Run Text=" " />
-                                        <Run Text="{Binding Name}" />
-                                    </TextBlock>
-                                    <TextBlock Text="{Binding Id}" Foreground="#667085" FontSize="12" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
+                        <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="6"><TextBlock FontWeight="Bold"><Run Text="{Binding StatusIcon}" /><Run Text=" " /><Run Text="{Binding Name}" /></TextBlock><TextBlock Text="{Binding Id}" Foreground="#667085" FontSize="12" /></StackPanel></DataTemplate></ListBox.ItemTemplate>
                     </ListBox>
                     <StackPanel Grid.Row="2" Margin="0,10,0,0">
                         <Button Content="+ Добавить бота" Click="AddBotButton_Click" Background="#4F46E5" Foreground="White" />
@@ -79,20 +57,12 @@
                     </StackPanel>
                 </Grid>
             </Border>
-
             <Border Grid.Column="2" Style="{StaticResource Card}">
                 <TabControl>
                     <TabItem Header="Настройки">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <Grid Margin="8">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
                                 <TextBlock Text="Название бота" FontWeight="SemiBold" />
                                 <TextBox x:Name="BotNameTextBox" Grid.Row="1" />
                                 <TextBlock Grid.Row="2" Text="Токен Telegram-бота" FontWeight="SemiBold" />
@@ -109,11 +79,7 @@
                     </TabItem>
                     <TabItem Header="Конструктор">
                         <Grid Margin="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
                             <TextBlock Text="scenario.json выбранного бота" FontWeight="Bold" Margin="0,0,0,8" />
                             <TextBox x:Name="ScenarioTextBox" Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" />
                             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
@@ -124,10 +90,7 @@
                     </TabItem>
                     <TabItem Header="Запуск и консоль">
                         <Grid Margin="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                 <Button Content="▶ Start" Click="StartBotButton_Click" Background="#12B76A" Foreground="White" />
                                 <Button Content="■ Stop" Click="StopBotButton_Click" />
@@ -140,9 +103,6 @@
                 </TabControl>
             </Border>
         </Grid>
-
-        <Border Grid.Row="2" Style="{StaticResource Card}" Background="#F7FAFF" Padding="10,8">
-            <TextBlock x:Name="StatusTextBlock" Text="Готово к работе." Foreground="#475467" />
-        </Border>
+        <Border Grid.Row="2" Style="{StaticResource Card}" Background="#F7FAFF" Padding="10,8"><TextBlock x:Name="StatusTextBlock" Text="Готово к работе." Foreground="#475467" /></Border>
     </Grid>
 </Window>
