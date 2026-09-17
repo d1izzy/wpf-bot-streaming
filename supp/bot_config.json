@@ -1,0 +1,6 @@
+{
+  "name": "Демо-бот",
+  "description": "Универсальный Telegram-бот для BotSupp Studio",
+  "mode": "scenario",
+  "language": "ru"
+}

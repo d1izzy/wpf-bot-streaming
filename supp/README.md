@@ -1,39 +1,82 @@
-# BotSupp
+# BotSupp Studio
 
 Открывайте в Visual Studio файл `supp.sln` из этой папки.
 
-В этой папке лежат все нужные исходные файлы для проекта:
+## Что изменилось в ветке multibot
 
-- `bot.py` — Python Telegram-бот;
-- `faq.json` — база FAQ;
-- `requirements.txt` — зависимости Python;
-- `proxy_runtime/config.json` — конфиг локального прокси;
-- `supp/supp.csproj` — WPF-проект.
+Ветка `feature/multibot-studio` начинает переделку проекта в универсальный конструктор/лаунчер ботов.
 
-При сборке Visual Studio автоматически копирует `bot.py` и `faq.json` в:
+Главное изменение: `bot.py` теперь автономный. Он читает файлы из своей папки:
 
 ```text
-supp/bin/Release/RuntimeAssets/
+.env
+bot_config.json
+scenario.json
+faq.json
+logs/bot.log
 ```
 
-Это настроено в `supp/supp.csproj`:
+Это значит, что один и тот же `bot.py` можно копировать в разные папки ботов:
 
-```xml
-<None Include="..\bot.py">
-  <Link>RuntimeAssets\bot.py</Link>
-  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-</None>
-<None Include="..\faq.json">
-  <Link>RuntimeAssets\faq.json</Link>
-  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-</None>
+```text
+%LOCALAPPDATA%\BotSuppRuntime\bots\support_bot\bot.py
+%LOCALAPPDATA%\BotSuppRuntime\bots\shop_bot\bot.py
+%LOCALAPPDATA%\BotSuppRuntime\bots\survey_bot\bot.py
 ```
 
-Для portable-сборки на Windows:
+## Запуск в Visual Studio
 
-```powershell
-.\prepare_python_runtime.ps1
-.\build_portable_zip.ps1
+1. Откройте:
+
+```text
+supp.sln
 ```
 
-Для автопрокси перед сборкой положите `xray.exe` или `sing-box.exe` в `proxy_runtime/` рядом с `config.json`.
+2. Запустите проект `supp`.
+
+При сборке Visual Studio копирует `bot.py` и `faq.json` в `RuntimeAssets`.
+
+## Универсальный сценарий
+
+Новый формат сценария лежит в:
+
+```text
+scenario.json
+```
+
+Пример кнопки перехода:
+
+```json
+{
+  "text": "Информация",
+  "action": "go",
+  "target": "info"
+}
+```
+
+Поддерживаемые действия:
+
+- `go` — перейти к другому шагу;
+- `message` — отправить сообщение без перехода;
+- `operator` — запросить оператора;
+- `start` — вернуться в начало;
+- `end` — завершить диалог.
+
+## Прокси
+
+WPF должен запускать общий прокси и передавать боту переменную:
+
+```text
+BOTSUPP_PROXY_URL=socks5://127.0.0.1:10808
+```
+
+`bot.py` автоматически использует эту переменную.
+
+## Следующий этап
+
+Следующий шаг — переделать WPF:
+
+- добавить список ботов слева;
+- добавить `bots_registry.json`;
+- сделать отдельный процесс Python для каждого бота;
+- сделать общую консоль с фильтром по выбранному боту.
