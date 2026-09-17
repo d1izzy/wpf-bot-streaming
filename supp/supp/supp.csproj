@@ -66,8 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="..\bot.py"><Link>RuntimeAssets\bot.py</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
-    <None Include="..\faq.json"><Link>RuntimeAssets\faq.json</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\..\bot.py"><Link>RuntimeAssets\bot.py</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\..\faq.json"><Link>RuntimeAssets\faq.json</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
