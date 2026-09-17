@@ -1,0 +1,13 @@
+{
+    "dns": {"queryStrategy": "UseIP", "servers": ["1.1.1.1", "1.0.0.1"]},
+    "inbounds": [
+        {"listen": "127.0.0.1", "port": 10808, "protocol": "socks", "settings": {"auth": "noauth", "udp": true}, "tag": "socks"},
+        {"listen": "127.0.0.1", "port": 10809, "protocol": "http", "settings": {"allowTransparent": false}, "tag": "http"}
+    ],
+    "outbounds": [
+        {"protocol": "freedom", "tag": "proxy"},
+        {"protocol": "freedom", "tag": "direct"},
+        {"protocol": "blackhole", "tag": "block"}
+    ],
+    "routing": {"domainStrategy": "AsIs", "rules": [{"outboundTag": "proxy", "network": "tcp,udp", "type": "field"}]}
+}
