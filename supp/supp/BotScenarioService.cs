@@ -1,0 +1,72 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Web.Script.Serialization;
+
+namespace supp
+{
+    public class BotScenarioService
+    {
+        private readonly JavaScriptSerializer _json = new JavaScriptSerializer();
+
+        public BotScenario LoadOrCreate(string workspace)
+        {
+            Directory.CreateDirectory(workspace);
+            var path = Path.Combine(workspace, "scenario.json");
+            if (!File.Exists(path))
+            {
+                var scenario = CreateDefault();
+                Save(workspace, scenario);
+                return scenario;
+            }
+
+            try
+            {
+                var scenario = _json.Deserialize<BotScenario>(File.ReadAllText(path));
+                return scenario ?? CreateDefault();
+            }
+            catch
+            {
+                return CreateDefault();
+            }
+        }
+
+        public void Save(string workspace, BotScenario scenario)
+        {
+            Directory.CreateDirectory(workspace);
+            File.WriteAllText(Path.Combine(workspace, "scenario.json"), _json.Serialize(scenario));
+        }
+
+        public BotScenario CreateDefault()
+        {
+            return new BotScenario
+            {
+                botName = "Демо-бот",
+                startStepId = "main",
+                unknownMessage = "Я не понял сообщение. Выберите действие из меню.",
+                steps = new List<BotScenarioStep>
+                {
+                    new BotScenarioStep
+                    {
+                        id = "main",
+                        text = "Здравствуйте! Выберите действие:",
+                        buttons = new List<BotScenarioButton>
+                        {
+                            new BotScenarioButton { text = "Информация", action = "go", target = "info" },
+                            new BotScenarioButton { text = "Связаться с оператором", action = "operator" }
+                        }
+                    },
+                    new BotScenarioStep
+                    {
+                        id = "info",
+                        text = "Это универсальный бот. Его сценарий можно менять в BotSupp Studio.",
+                        buttons = new List<BotScenarioButton>
+                        {
+                            new BotScenarioButton { text = "В меню", action = "go", target = "main" },
+                            new BotScenarioButton { text = "Завершить", action = "end", message = "Диалог завершён. Чтобы начать заново, отправьте /start." }
+                        }
+                    }
+                }
+            };
+        }
+    }
+}
