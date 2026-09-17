@@ -55,6 +55,11 @@
     <ApplicationDefinition Include="App.xaml"><Generator>MSBuild:Compile</Generator><SubType>Designer</SubType></ApplicationDefinition>
     <Page Include="MainWindow.xaml"><Generator>MSBuild:Compile</Generator><SubType>Designer</SubType></Page>
     <Compile Include="App.xaml.cs"><DependentUpon>App.xaml</DependentUpon><SubType>Code</SubType></Compile>
+    <Compile Include="BotProfile.cs" />
+    <Compile Include="BotRegistryService.cs" />
+    <Compile Include="BotProcessManager.cs" />
+    <Compile Include="BotScenario.cs" />
+    <Compile Include="BotScenarioService.cs" />
     <Compile Include="MainWindow.xaml.cs"><DependentUpon>MainWindow.xaml</DependentUpon><SubType>Code</SubType></Compile>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +73,9 @@
     <None Include="App.config" />
     <None Include="..\bot.py"><Link>RuntimeAssets\bot.py</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
     <None Include="..\faq.json"><Link>RuntimeAssets\faq.json</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\scenario.json"><Link>RuntimeAssets\scenario.json</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\bot_config.json"><Link>RuntimeAssets\bot_config.json</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
   </ItemGroup>
+  <ItemGroup><Resource Include="1233.png" /></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
