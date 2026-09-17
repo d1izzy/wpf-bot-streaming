@@ -1,0 +1,34 @@
+# Secrets
+.env
+*.env
+
+# Python cache/venv
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Visual Studio user/build artifacts
+.vs/
+*.user
+*.suo
+*.rsuser
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.pdb
+*.cache
+
+# Build output
+dist/
+
+# Large bundled runtimes; build scripts recreate/copy these locally
+python_runtime/
+proxy_runtime/*.exe
+proxy_runtime/*.dll
+proxy_runtime/sing-box*
+proxy_runtime/xray*
+
+# Office temp files
+~$*
