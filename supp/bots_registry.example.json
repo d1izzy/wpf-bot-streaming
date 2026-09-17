@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "bots": [
+    {
+      "id": "default_bot",
+      "name": "Демо-бот",
+      "folder": "bots/default_bot",
+      "enabled": true,
+      "autostart": false,
+      "useProxy": true,
+      "entryPoint": "bot.py",
+      "template": "scenario"
+    }
+  ]
+}

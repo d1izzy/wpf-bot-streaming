@@ -1,0 +1,23 @@
+{
+  "botName": "Демо-бот",
+  "startStepId": "main",
+  "unknownMessage": "Я не понял сообщение. Выберите действие из меню.",
+  "steps": [
+    {
+      "id": "main",
+      "text": "Здравствуйте! Выберите действие:",
+      "buttons": [
+        { "text": "Информация", "action": "go", "target": "info" },
+        { "text": "Связаться с оператором", "action": "operator" }
+      ]
+    },
+    {
+      "id": "info",
+      "text": "Это универсальный бот. Его сценарий можно менять в scenario.json.",
+      "buttons": [
+        { "text": "В меню", "action": "go", "target": "main" },
+        { "text": "Завершить", "action": "end", "message": "Диалог завершён. Чтобы начать заново, отправьте /start." }
+      ]
+    }
+  ]
+}
