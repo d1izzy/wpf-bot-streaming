@@ -1,0 +1,106 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+
+namespace supp
+{
+    public class BotLogEventArgs : EventArgs
+    {
+        public string BotId { get; set; }
+        public string Line { get; set; }
+    }
+
+    public class BotProcessManager
+    {
+        private readonly Dictionary<string, Process> _processes = new Dictionary<string, Process>();
+        public event EventHandler<BotLogEventArgs> LogReceived;
+        public event EventHandler<string> BotExited;
+
+        public bool IsRunning(string botId)
+        {
+            return _processes.ContainsKey(botId) && !_processes[botId].HasExited;
+        }
+
+        public void Start(BotProfile bot, string workspace, string pythonExe, string argsPrefix, string proxyUrl)
+        {
+            if (bot == null) throw new ArgumentNullException(nameof(bot));
+            if (IsRunning(bot.Id)) return;
+            Directory.CreateDirectory(workspace);
+            Directory.CreateDirectory(Path.Combine(workspace, "logs"));
+            var entry = string.IsNullOrWhiteSpace(bot.EntryPoint) ? "bot.py" : bot.EntryPoint;
+            var args = string.IsNullOrWhiteSpace(argsPrefix) ? $"\"{entry}\"" : $"{argsPrefix} \"{entry}\"";
+            var p = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = pythonExe,
+                    Arguments = args,
+                    WorkingDirectory = workspace,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                },
+                EnableRaisingEvents = true
+            };
+            if (bot.UseProxy && !string.IsNullOrWhiteSpace(proxyUrl))
+            {
+                p.StartInfo.EnvironmentVariables["BOTSUPP_PROXY_URL"] = proxyUrl;
+                p.StartInfo.EnvironmentVariables["ALL_PROXY"] = proxyUrl;
+                p.StartInfo.EnvironmentVariables["HTTPS_PROXY"] = proxyUrl;
+                p.StartInfo.EnvironmentVariables["HTTP_PROXY"] = proxyUrl;
+            }
+            p.OutputDataReceived += (s, e) => EmitLog(bot.Id, e.Data);
+            p.ErrorDataReceived += (s, e) => EmitLog(bot.Id, string.IsNullOrEmpty(e.Data) ? e.Data : "ERR: " + e.Data);
+            p.Exited += (s, e) =>
+            {
+                _processes.Remove(bot.Id);
+                bot.Status = "offline";
+                BotExited?.Invoke(this, bot.Id);
+            };
+            bot.Status = "starting";
+            p.Start();
+            _processes[bot.Id] = p;
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
+            bot.Status = "online";
+            EmitLog(bot.Id, "Бот запущен.");
+        }
+
+        public void Stop(string botId)
+        {
+            if (!_processes.ContainsKey(botId)) return;
+            var p = _processes[botId];
+            try
+            {
+                if (!p.HasExited) p.Kill();
+                p.WaitForExit(2000);
+            }
+            catch { }
+            finally
+            {
+                p.Dispose();
+                _processes.Remove(botId);
+            }
+            EmitLog(botId, "Бот остановлен.");
+        }
+
+        public int RunningCount
+        {
+            get
+            {
+                var count = 0;
+                foreach (var p in _processes.Values)
+                    if (!p.HasExited) count++;
+                return count;
+            }
+        }
+
+        private void EmitLog(string botId, string line)
+        {
+            if (string.IsNullOrEmpty(line)) return;
+            LogReceived?.Invoke(this, new BotLogEventArgs { BotId = botId, Line = line });
+        }
+    }
+}
