@@ -10,7 +10,6 @@ if errorlevel 1 (
 py -3.10 -c "import telegram" >nul 2>&1
 if errorlevel 1 (
     echo ВНИМАНИЕ: Зависимости не установлены!
-    echo Установите зависимости: py -3.10 -m pip install -r requirements.txt
     pause
     exit /b 1
 )
